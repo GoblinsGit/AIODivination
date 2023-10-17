@@ -16,6 +16,17 @@ local npcs = {
     18161
 }
 local timeout = os.time() + 300
+local idle_time = os.time()
+
+
+local function idle()
+    if os.time() > idle_time then
+        print("idle")
+        API.PIdle2()
+        idle_time = os.time() + math.random(60, 250)
+    end
+end
+
 
 while API.Read_LoopyLoop() do
     if not API.InventoryInterfaceCheckvarbit() then
@@ -27,6 +38,7 @@ while API.Read_LoopyLoop() do
         API.DoAction_Object1(0xc8,0,{ 93489 },50)
         API.DoAction_Object1(0xc8,0,{ 87306 },50)
         timeout = os.time() + 300
+        API.RandomSleep2(600, 0, 600)
     end
 
     if not API.IsPlayerAnimating_(player, 100) and (not API.InvFull_()) then
@@ -40,6 +52,6 @@ while API.Read_LoopyLoop() do
         return
     end
 
-    -- UTILS.idle() --Add idle here if you want to use. 
+    idle()
     API.DoRandomEvents()
 end
